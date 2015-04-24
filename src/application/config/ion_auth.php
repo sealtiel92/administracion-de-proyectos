@@ -86,6 +86,7 @@ $config['site_title']                 = "Example.com";       // Site Title, exam
 $config['admin_email']                = "admin@example.com"; // Admin Email, admin@example.com
 $config['default_group']              = 'cliente';           // Default group, use name
 $config['admin_group']                = 'admin';             // Default administrators group, use name
+$config['cliente_group']                = 'cliente';             // Default clientes
 $config['identity']                   = 'email';             // A database column which is used to login with
 $config['min_password_length']        = 8;                   // Minimum Required Length of Password
 $config['max_password_length']        = 20;                  // Maximum Allowed Length of Password

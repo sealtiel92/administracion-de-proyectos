@@ -455,6 +455,21 @@ class Ion_auth
 	}
 
 	/**
+	 * is_cliente
+	 *
+	 * @return bool
+	 * @author seat
+	 **/
+	public function is_cliente($id=false)
+	{
+		$this->ion_auth_model->trigger_events('is_cliente');
+
+		$cliente_group = $this->config->item('cliente_group', 'ion_auth');
+
+		return $this->in_group($cliente_group, $id);
+	}
+
+	/**
 	 * in_group
 	 *
 	 * @param mixed group(s) to check

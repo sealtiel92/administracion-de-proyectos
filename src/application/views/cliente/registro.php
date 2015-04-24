@@ -7,7 +7,7 @@
 
 <table cellspacing="25" align="center">
 
-<?php echo form_open("auth/registro");?>
+<?php echo form_open("cliente/registro");?>
 
       <tr><p>
             <td><?php echo lang('create_user_fname_label', 'first_name');?></td>

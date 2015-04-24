@@ -36,23 +36,11 @@ class Cliente extends CI_Controller {
 			//redirect them to the login page
 			redirect('cliente/login', 'refresh');	
 		}
-		if ($this->ion_auth->is_admin()) //remove this elseif if you want to enable this for non-admins
+		if ($this->ion_auth->is_cliente()) //remove this elseif if you want to enable this for non-admins
 		{
 			$this->load->view('cliente/index');
-		}
-		else
-		{
-			//set the flash data error message if there is one
-			$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-
-			//list the users
-			$this->data['users'] = $this->ion_auth->users()->result();
-			foreach ($this->data['users'] as $k => $user)
-			{
-				$this->data['users'][$k]->groups = $this->ion_auth->get_users_groups($user->id)->result();
-			}
-
-			$this->_render_page('cliente/index', $this->data);
+		}else{
+			$this->load->view('index.html');
 		}
 	}
 
@@ -163,7 +151,7 @@ class Cliente extends CI_Controller {
 				'phone'      => $this->input->post('phone'),
 			);
 		}
-		if ($this->form_validation->run() == true && $this->ion_auth->register($username, $password, $email, $additional_data))
+		if ($this->form_validation->run() == true && $this->ion_auth->register($username, $password, $email, $additional_data, $groups = array('id' => '4')))
 		{
 			//check to see if we are creating the user
 			//redirect them back to the admin page

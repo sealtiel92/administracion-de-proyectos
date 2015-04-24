@@ -35,7 +35,7 @@ class Auth extends CI_Controller {
 			$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
 
 			//list the users
-			$this->data['users'] = $this->ion_auth->users()->result();
+			$this->data['users'] = $this->ion_auth->users('2')->result();
 			foreach ($this->data['users'] as $k => $user)
 			{
 				$this->data['users'][$k]->groups = $this->ion_auth->get_users_groups($user->id)->result();
@@ -456,7 +456,8 @@ class Auth extends CI_Controller {
 				'phone'      => $this->input->post('phone'),
 			);
 		}
-		if ($this->form_validation->run() == true && $this->ion_auth->register($username, $password, $email, $additional_data))
+		if ($this->form_validation->run() == true &&
+		 $this->ion_auth->register($username, $password, $email, $additional_data, $groups = array('id' => '2') ))
 		{
 			//check to see if we are creating the user
 			//redirect them back to the admin page
@@ -799,7 +800,7 @@ class Auth extends CI_Controller {
 		if (!$render) return $view_html;
 	}
 
-
+	/*
 	//create a new cliente
 	function registro()
 	{
@@ -886,6 +887,6 @@ class Auth extends CI_Controller {
 		}
 	}
 
-	//edit a cliente
+	//edit a cliente */
 
 }
