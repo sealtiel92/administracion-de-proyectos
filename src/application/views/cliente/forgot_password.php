@@ -4,12 +4,17 @@
 <div id="infoMessage"><?php echo $message;?></div>
 
 <?php echo form_open("cliente/forgot_password");?>
-
-      <p>
+<br><br><br>
+<table cellspacing="25">
+    <tr>
+    <td> <p>
       	<label for="email"><?php echo sprintf(lang('forgot_password_email_label'), $identity_label);?></label> <br />
-      	<?php echo form_input($email);?>
-      </p>
+      	</td><td> <?php echo form_input($email);?>
+    </p></td>
+    
+    <td><p><?php echo form_submit('submit', lang('forgot_password_submit_btn'));?>
+    </p></td>
+    </tr>
 
-      <p><?php echo form_submit('submit', lang('forgot_password_submit_btn'));?></p>
-
+</table>
 <?php echo form_close();?>

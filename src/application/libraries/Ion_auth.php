@@ -528,5 +528,4 @@ class Ion_auth
 		 */
 		return $check_all;
 	}
-
 }

@@ -18,10 +18,12 @@ class Cliente extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->database();
+		$this->load->model('cliente_model');
 		$this->load->library(array('ion_auth','form_validation'));
 		$this->load->helper(array('url','language'));
 
-		$this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
+		$this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), 
+			$this->config->item('error_end_delimiter', 'ion_auth'));
 
 		$this->lang->load('ion_auth');
 		$this->lang->load('auth');
@@ -30,27 +32,30 @@ class Cliente extends CI_Controller {
 	//redirect if needed, otherwise display the user list
 	function index()
 	{
-
-		if (!$this->ion_auth->logged_in())
+		$data['title'] = "Inicio";
+		$data['producto'] = $this->cliente_model->productos();
+		if(!$this->ion_auth->logged_in())
 		{
-			//redirect them to the login page
-			redirect('cliente/login', 'refresh');	
+			$this->load->view('cliente/header_login', $data);
+			$this->load->view('cliente/index', $data);
 		}
-		if ($this->ion_auth->is_cliente()) //remove this elseif if you want to enable this for non-admins
+		if ($this->ion_auth->is_cliente() && $this->ion_auth->logged_in()) //remove this elseif if you want to enable this for non-admins
 		{
-			$this->load->view('cliente/index');
-		}else{
-			$this->load->view('index.html');
+			$this->load->view('cliente/header_logout', $data);
+			$this->load->view('cliente/index', $data);
 		}
 	}
 
 	//log the user in
 	function login()
 	{
+
+		$data['title'] = "Login";
+
+		$data['producto'] = $this->cliente_model->productos();
 		if(!$this->ion_auth->logged_in())
 		{
-			$this->data['title'] = "Login";
-
+			
 		//validate form input
 		$this->form_validation->set_rules('identity', 'Identity', 'required');
 		$this->form_validation->set_rules('password', 'Password', 'required');
@@ -66,14 +71,16 @@ class Cliente extends CI_Controller {
 				//if the login is successful
 				//redirect them back to the home page
 				$this->session->set_flashdata('message', $this->ion_auth->messages());
-				redirect('cliente/index', 'refresh');
+				redirect('cliente/index', 'refresh', $data);
 			}
 			else
 			{
 				//if the login was un-successful
 				//redirect them back to the login page
 				$this->session->set_flashdata('message', $this->ion_auth->errors());
-				redirect('cliente/login', 'refresh'); //use redirects instead of loading views for compatibility with MY_Controller libraries
+				$this->load->view('cliente/header_logout');
+				redirect('cliente/login', 'refresh');
+				 //use redirects instead of loading views for compatibility with MY_Controller libraries
 			}
 		}
 		else
@@ -92,10 +99,11 @@ class Cliente extends CI_Controller {
 				'type' => 'password',
 			);
 
+			$this->load->view('cliente/header_login', $data);
 			$this->_render_page('cliente/login', $this->data);
 		}
 		}else{
-			redirect('cliente/');
+			redirect('cliente/index');
 		}
 	}
 
@@ -134,10 +142,14 @@ class Cliente extends CI_Controller {
 		//validate form input
 		$this->form_validation->set_rules('first_name', $this->lang->line('create_user_validation_fname_label'), 'required');
 		$this->form_validation->set_rules('last_name', $this->lang->line('create_user_validation_lname_label'), 'required');
-		$this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'required|valid_email|is_unique['.$tables['users'].'.email]');
+		$this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 
+			'required|valid_email|is_unique['.$tables['users'].'.email]');
 		$this->form_validation->set_rules('phone', $this->lang->line('create_user_validation_phone_label'), 'required');
-		$this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
-		$this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
+		$this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 
+			'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . 
+			$this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
+		$this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 
+			'required');
 
 		if ($this->form_validation->run() == true)
 		{
@@ -151,7 +163,8 @@ class Cliente extends CI_Controller {
 				'phone'      => $this->input->post('phone'),
 			);
 		}
-		if ($this->form_validation->run() == true && $this->ion_auth->register($username, $password, $email, $additional_data, $groups = array('id' => '4')))
+		if ($this->form_validation->run() == true && $this->ion_auth->register($username, $password, $email, 
+			$additional_data, $groups = array('id' => '3')))
 		{
 			//check to see if we are creating the user
 			//redirect them back to the admin page
@@ -162,7 +175,8 @@ class Cliente extends CI_Controller {
 		{
 			//display the create user form
 			//set the flash data error message if there is one
-			$this->data['message'] = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ? $this->ion_auth->errors() : $this->session->flashdata('message')));
+			$this->data['message'] = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ?
+			 $this->ion_auth->errors() : $this->session->flashdata('message')));
 
 			$this->data['first_name'] = array(
 				'name'  => 'first_name',
@@ -200,7 +214,9 @@ class Cliente extends CI_Controller {
 				'type'  => 'password',
 				'value' => $this->form_validation->set_value('password_confirm'),
 			);
-
+			$data['title']='Registro';
+			$data['producto'] = $this->cliente_model->productos();
+			$this->load->view('cliente/header_login', $data);
 			$this->_render_page('cliente/registro', $this->data);
 		}
 	}
@@ -208,9 +224,14 @@ class Cliente extends CI_Controller {
 	//change password
 	function change_password()
 	{
-		$this->form_validation->set_rules('old', $this->lang->line('change_password_validation_old_password_label'), 'required');
-		$this->form_validation->set_rules('new', $this->lang->line('change_password_validation_new_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[new_confirm]');
-		$this->form_validation->set_rules('new_confirm', $this->lang->line('change_password_validation_new_password_confirm_label'), 'required');
+
+		$this->form_validation->set_rules('old', $this->lang->line('change_password_validation_old_password_label'), 
+			'required');
+		$this->form_validation->set_rules('new', $this->lang->line('change_password_validation_new_password_label'), 
+			'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . 
+			$this->config->item('max_password_length', 'ion_auth') . ']|matches[new_confirm]');
+		$this->form_validation->set_rules('new_confirm', $this->lang->line('change_password_validation_new_password_confirm_label'), 
+			'required');
 
 		if (!$this->ion_auth->logged_in())
 		{
@@ -276,6 +297,10 @@ class Cliente extends CI_Controller {
 	//forgot password
 	function forgot_password()
 	{
+		
+			$data['title']='Registro';
+			$data['producto'] = $this->cliente_model->productos();
+			$this->load->view('cliente/header_login', $data);
 		if(!$this->ion_auth->logged_in())
 		{
 			//setting validation rules by checking wheather identity is username or email
@@ -285,7 +310,8 @@ class Cliente extends CI_Controller {
 		}
 		else
 		{
-		   $this->form_validation->set_rules('email', $this->lang->line('forgot_password_validation_email_label'), 'required|valid_email');
+		   $this->form_validation->set_rules('email', $this->lang->line('forgot_password_validation_email_label'), 
+		   	'required|valid_email');
 		}
 
 
@@ -386,4 +412,64 @@ class Cliente extends CI_Controller {
 
 		if (!$render) return $view_html;
 	}
+
+	function catalogo($id = null)
+	{
+		$data['title']='catalogo';
+		$data['producto'] = $this->cliente_model->productos();
+		//get producto 
+			
+			if($id != null)
+			{
+				$data['productos'] = $this->cliente_model->productos_detalle($id);	
+			}else
+			{
+				$data['productos'] = $this->cliente_model->productos_detalle();	
+			}
+
+			if(!$this->ion_auth->logged_in())
+			{
+				$this->load->view('cliente/header_login', $data);
+			}
+			else
+			{
+				$this->load->view('cliente/header_logout', $data);
+			}
+			$this->load->view('cliente/catalogo', $data);
+		
+	}
+
+	function compras($id = null)
+	{
+		$data['title']='compras';
+		$data['producto'] = $this->cliente_model->productos();
+
+		if($this->ion_auth->logged_in())
+		{	
+			$data['iduser']=$this->ion_auth->get_user_id();
+			$data['idpro']=$id;		
+			$this->load->view('cliente/header_logout', $data);
+			$this->load->view('cliente/compras', $data);
+		}else
+		{
+			redirect('cliente/login');
+		}
+	}
+
+
+	function quienes()
+	{
+		$data['title']='¿quienes somos?';
+		$data['producto'] = $this->cliente_model->productos();
+		if(!$this->ion_auth->logged_in())
+		{
+			$this->load->view('cliente/header_login', $data);
+		}else
+		{
+			$this->load->view('cliente/header_logout', $data);
+		}	
+		$this->load->view('cliente/quienes', $data);
+		
+	}
+
 }

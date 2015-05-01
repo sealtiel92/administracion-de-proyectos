@@ -9,7 +9,8 @@ class Auth extends CI_Controller {
 		$this->load->library(array('ion_auth','form_validation'));
 		$this->load->helper(array('url','language'));
 
-		$this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
+		$this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), 
+		$this->config->item('error_end_delimiter', 'ion_auth'));
 
 		$this->lang->load('ion_auth');
 		$this->lang->load('auth');
@@ -74,7 +75,8 @@ class Auth extends CI_Controller {
 				//if the login was un-successful
 				//redirect them back to the login page
 				$this->session->set_flashdata('message', $this->ion_auth->errors());
-				redirect('auth/login', 'refresh'); //use redirects instead of loading views for compatibility with MY_Controller libraries
+				redirect('auth/login', 'refresh'); 
+				//use redirects instead of loading views for compatibility with MY_Controller libraries
 			}
 		}
 		else
@@ -122,8 +124,11 @@ class Auth extends CI_Controller {
 	function change_password()
 	{
 		$this->form_validation->set_rules('old', $this->lang->line('change_password_validation_old_password_label'), 'required');
-		$this->form_validation->set_rules('new', $this->lang->line('change_password_validation_new_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[new_confirm]');
-		$this->form_validation->set_rules('new_confirm', $this->lang->line('change_password_validation_new_password_confirm_label'), 'required');
+		$this->form_validation->set_rules('new', $this->lang->line('change_password_validation_new_password_label'), 
+			'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . 
+			$this->config->item('max_password_length', 'ion_auth') . ']|matches[new_confirm]');
+		$this->form_validation->set_rules('new_confirm', $this->lang->line('change_password_validation_new_password_confirm_label'), 
+			'required');
 
 		if (!$this->ion_auth->logged_in())
 		{
@@ -196,7 +201,8 @@ class Auth extends CI_Controller {
 		}
 		else
 		{
-		   $this->form_validation->set_rules('email', $this->lang->line('forgot_password_validation_email_label'), 'required|valid_email');
+		   $this->form_validation->set_rules('email', $this->lang->line('forgot_password_validation_email_label'), 
+		   	'required|valid_email');
 		}
 
 
@@ -275,8 +281,11 @@ class Auth extends CI_Controller {
 		{
 			//if the code is valid then display the password reset form
 
-			$this->form_validation->set_rules('new', $this->lang->line('reset_password_validation_new_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[new_confirm]');
-			$this->form_validation->set_rules('new_confirm', $this->lang->line('reset_password_validation_new_password_confirm_label'), 'required');
+			$this->form_validation->set_rules('new', $this->lang->line('reset_password_validation_new_password_label'), 
+				'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . 
+				$this->config->item('max_password_length', 'ion_auth') . ']|matches[new_confirm]');
+			$this->form_validation->set_rules('new_confirm', $this->lang->line('reset_password_validation_new_password_confirm_label'), 
+				'required');
 
 			if ($this->form_validation->run() == false)
 			{
@@ -439,10 +448,14 @@ class Auth extends CI_Controller {
 		//validate form input
 		$this->form_validation->set_rules('first_name', $this->lang->line('create_user_validation_fname_label'), 'required');
 		$this->form_validation->set_rules('last_name', $this->lang->line('create_user_validation_lname_label'), 'required');
-		$this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'required|valid_email|is_unique['.$tables['users'].'.email]');
+		$this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 
+			'required|valid_email|is_unique['.$tables['users'].'.email]');
 		$this->form_validation->set_rules('phone', $this->lang->line('create_user_validation_phone_label'), 'required');
-		$this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
-		$this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
+		$this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 
+			'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' .
+			 $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
+		$this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 
+			'required');
 
 		if ($this->form_validation->run() == true)
 		{
@@ -457,7 +470,7 @@ class Auth extends CI_Controller {
 			);
 		}
 		if ($this->form_validation->run() == true &&
-		 $this->ion_auth->register($username, $password, $email, $additional_data, $groups = array('id' => '2') ))
+		 $this->ion_auth->register($username, $password, $email, $additional_data, $groups = array('id' => '2')))
 		{
 			//check to see if we are creating the user
 			//redirect them back to the admin page
@@ -468,7 +481,8 @@ class Auth extends CI_Controller {
 		{
 			//display the create user form
 			//set the flash data error message if there is one
-			$this->data['message'] = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ? $this->ion_auth->errors() : $this->session->flashdata('message')));
+			$this->data['message'] = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ? 
+				$this->ion_auth->errors() : $this->session->flashdata('message')));
 
 			$this->data['first_name'] = array(
 				'name'  => 'first_name',
@@ -541,8 +555,11 @@ class Auth extends CI_Controller {
 			//update the password if it was posted
 			if ($this->input->post('password'))
 			{
-				$this->form_validation->set_rules('password', $this->lang->line('edit_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
-				$this->form_validation->set_rules('password_confirm', $this->lang->line('edit_user_validation_password_confirm_label'), 'required');
+				$this->form_validation->set_rules('password', $this->lang->line('edit_user_validation_password_label'), 
+					'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . 
+					$this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
+				$this->form_validation->set_rules('password_confirm', $this->lang->line('edit_user_validation_password_confirm_label'), 
+					'required');
 			}
 
 			if ($this->form_validation->run() === TRUE)
@@ -615,7 +632,8 @@ class Auth extends CI_Controller {
 		$this->data['csrf'] = $this->_get_csrf_nonce();
 
 		//set the flash data error message if there is one
-		$this->data['message'] = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ? $this->ion_auth->errors() : $this->session->flashdata('message')));
+		$this->data['message'] = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ? $this->ion_auth->errors()
+		 : $this->session->flashdata('message')));
 
 		//pass the user to the view
 		$this->data['user'] = $user;
@@ -682,7 +700,8 @@ class Auth extends CI_Controller {
 		{
 			//display the create group form
 			//set the flash data error message if there is one
-			$this->data['message'] = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ? $this->ion_auth->errors() : $this->session->flashdata('message')));
+			$this->data['message'] = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ? 
+				$this->ion_auth->errors() : $this->session->flashdata('message')));
 
 			$this->data['group_name'] = array(
 				'name'  => 'group_name',
@@ -741,7 +760,8 @@ class Auth extends CI_Controller {
 		}
 
 		//set the flash data error message if there is one
-		$this->data['message'] = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ? $this->ion_auth->errors() : $this->session->flashdata('message')));
+		$this->data['message'] = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ? $this->ion_auth->errors()
+			: $this->session->flashdata('message')));
 
 		//pass the user to the view
 		$this->data['group'] = $group;
@@ -816,10 +836,14 @@ class Auth extends CI_Controller {
 		//validate form input
 		$this->form_validation->set_rules('first_name', $this->lang->line('create_user_validation_fname_label'), 'required');
 		$this->form_validation->set_rules('last_name', $this->lang->line('create_user_validation_lname_label'), 'required');
-		$this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'required|valid_email|is_unique['.$tables['users'].'.email]');
+		$this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 
+		'required|valid_email|is_unique['.$tables['users'].'.email]');
 		$this->form_validation->set_rules('phone', $this->lang->line('create_user_validation_phone_label'), 'required');
-		$this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
-		$this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
+		$this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 
+		'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . 
+		$this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
+		$this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 
+		'required');
 
 		if ($this->form_validation->run() == true)
 		{
@@ -844,7 +868,8 @@ class Auth extends CI_Controller {
 		{
 			//display the create user form
 			//set the flash data error message if there is one
-			$this->data['message'] = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ? $this->ion_auth->errors() : $this->session->flashdata('message')));
+			$this->data['message'] = (validation_errors() ? validation_errors() : ($this->ion_auth->errors()
+			 ? $this->ion_auth->errors() : $this->session->flashdata('message')));
 
 			$this->data['first_name'] = array(
 				'name'  => 'first_name',
