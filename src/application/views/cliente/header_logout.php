@@ -22,7 +22,10 @@
         </li>
       <?= '<li><a href="'.base_url().'cliente/compras">Compras</a></li>'?>
       <?= '<li><a href="'.base_url().'cliente/quienes">¿Quienes somos?</a></li>'?>
-      <?= '<li><a href="'.base_url().'cliente/logout">Salir</a></li>'?>
+      <?= '<li><a href="'.base_url().'cliente/logout">Salir</a>'?>
+        <ul class="submenu">
+            <?= '<li><a href="'.base_url().'cliente/pedidos">Mis pedidos #'.$count.'</a></li>'?>
+        </ul>
     </ul>
   </div>
   <center>

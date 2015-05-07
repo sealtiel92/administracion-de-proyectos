@@ -1,12 +1,13 @@
 
 
-<h1>pedido</h1>
+<h1>Compras</h1>
 <center>
-<?php
-	echo $iduser;
-	echo "<br>";
-	echo $idpro;
+<?php 
+
+	
+
 ?>
+
 </center>
 </body>
 </html>

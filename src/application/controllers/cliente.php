@@ -41,6 +41,7 @@ class Cliente extends CI_Controller {
 		}
 		if ($this->ion_auth->is_cliente() && $this->ion_auth->logged_in()) //remove this elseif if you want to enable this for non-admins
 		{
+			$data['count'] = $this->cliente_model->pedidos_count($this->ion_auth->get_user_id());
 			$this->load->view('cliente/header_logout', $data);
 			$this->load->view('cliente/index', $data);
 		}
@@ -78,6 +79,7 @@ class Cliente extends CI_Controller {
 				//if the login was un-successful
 				//redirect them back to the login page
 				$this->session->set_flashdata('message', $this->ion_auth->errors());
+				$data['count'] = $this->cliente_model->pedidos_count($this->ion_auth->get_user_id());
 				$this->load->view('cliente/header_logout');
 				redirect('cliente/login', 'refresh');
 				 //use redirects instead of loading views for compatibility with MY_Controller libraries
@@ -433,6 +435,7 @@ class Cliente extends CI_Controller {
 			}
 			else
 			{
+				$data['count'] = $this->cliente_model->pedidos_count($this->ion_auth->get_user_id());
 				$this->load->view('cliente/header_logout', $data);
 			}
 			$this->load->view('cliente/catalogo', $data);
@@ -448,6 +451,7 @@ class Cliente extends CI_Controller {
 		{	
 			$data['iduser']=$this->ion_auth->get_user_id();
 			$data['idpro']=$id;		
+			$data['count'] = $this->cliente_model->pedidos_count($this->ion_auth->get_user_id());
 			$this->load->view('cliente/header_logout', $data);
 			$this->load->view('cliente/compras', $data);
 		}else
@@ -466,10 +470,27 @@ class Cliente extends CI_Controller {
 			$this->load->view('cliente/header_login', $data);
 		}else
 		{
+			$data['count'] = $this->cliente_model->pedidos_count($this->ion_auth->get_user_id());
 			$this->load->view('cliente/header_logout', $data);
 		}	
 		$this->load->view('cliente/quienes', $data);
 		
+	}
+
+	function pedidos()
+	{
+		$data['title']='pedidos';
+		$data['producto'] = $this->cliente_model->productos();
+		$data['pedido'] = $this->cliente_model->pedidos($this->ion_auth->get_user_id());
+		if(!$this->ion_auth->logged_in())
+		{
+			$this->load->view('cliente/header_login', $data);
+		}else
+		{
+			$data['count'] = $this->cliente_model->pedidos_count($this->ion_auth->get_user_id());
+			$this->load->view('cliente/header_logout', $data);
+		}	
+		$this->load->view('cliente/pedido', $data);	
 	}
 
 }
