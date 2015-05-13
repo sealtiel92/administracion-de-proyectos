@@ -11,12 +11,12 @@ class Cliente_model extends CI_Model
 		$this->load->database();
 	}
 
-	public function productos($id = null)
+	public function categoria($id = null)
 	{
 			$query = $this->db->select('*');
-			$query = $this->db->from('producto');
+			$query = $this->db->from('categoria');
 			if($id != null)
-			$query = $this->db->where('idproducto',$id);
+			$query = $this->db->where('idcategoria',$id);
 			$query = $this->db->get();
 			
 			if ($query->num_rows() > 0)
@@ -29,11 +29,10 @@ class Cliente_model extends CI_Model
 		public function productos_detalle($id = null)
 		{
 
-		$this->db->select('nombre,tipo,talla,marca,existencias,color,producto.idproducto');
 		$this->db->from('producto');
-		$this->db->join('detalle','producto.idproducto = detalle.idproducto','inner');
+		$this->db->join('categoria','categoria.idcategoria = producto.idcategoria','inner');
 		if($id != null)
-		$this->db->where('producto.idproducto', $id);
+		$this->db->where('categoria.idcategoria', $id);
 		$query = $this->db->get();
 
 		if ($query->num_rows() > 0)
@@ -77,4 +76,21 @@ class Cliente_model extends CI_Model
 			return null;
 		}
 	}
+
+	public function productos($array = null)
+	{
+		$this->db->from('producto');
+		$this->db->where_in('idproducto',$array);
+		$this->db->join('categoria','categoria.idcategoria = producto.idcategoria','inner');
+		$query = $this->db->get();
+		if ($query->num_rows() > 0)
+		{
+			return $query->result();
+		}
+		else
+		{
+			return null;
+		}
+	}
+
 }

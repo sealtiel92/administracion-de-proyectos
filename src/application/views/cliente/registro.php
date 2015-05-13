@@ -4,44 +4,44 @@
 </center>
 
 <div id="infoMessage"><?php echo $message;?></div>
-
-<table cellspacing="25" align="center">
+<div class='tablaRegistro'>
+<table cellspacing="25" align="center" class="table table-bordered">
 
 <?php echo form_open("cliente/registro");?>
 
       <tr><p>
-            <td><?php echo lang('create_user_fname_label', 'first_name');?></td>
+            <th class="info"><?php echo lang('create_user_fname_label', 'first_name');?></th>
             <td><?php echo form_input($first_name);?></td>
       </p></tr>
 
       <tr><p>
-            <td><?php echo lang('create_user_lname_label', 'last_name');?> </td>
+            <th class="info"><?php echo lang('create_user_lname_label', 'last_name');?> </th>
             <td><?php echo form_input($last_name);?></td>
       </p></tr>
 
       <tr><p>
-            <td><?php echo lang('create_user_email_label', 'email');?> </td>
+            <th class="info"><?php echo lang('create_user_email_label', 'email');?> </th>
             <td><?php echo form_input($email);?></td>
       </p></tr>
 
       <tr><p>
-            <td><?php echo lang('create_user_phone_label', 'phone');?> </td>
+            <th class="info"><?php echo lang('create_user_phone_label', 'phone');?> </th>
             <td><?php echo form_input($phone);?></td>
       </p></tr>
 
       <tr><p>
-            <td><?php echo lang('create_user_password_label', 'password');?> </td>
+            <th class="info"><?php echo lang('create_user_password_label', 'password');?> </th>
             <td><?php echo form_input($password);?></td>
       </p></tr>
 
       <tr><p>
-            <td><?php echo lang('create_user_password_confirm_label', 'password_confirm');?> </td>
+            <th class="info"><?php echo lang('create_user_password_confirm_label', 'password_confirm');?> </th>
             <td><?php echo form_input($password_confirm);?></td>
       </p></tr>
 
-      <tr><td></td>
-      <td><p><?php echo form_submit('submit', lang('create_user_submit_btn'));?></p></td>
-      </tr>
-<?php echo form_close();?>
+
 
 </table>
+<button class="btn btn-info" type="submit"><strong>Pedir</strong></button> 
+<?php echo form_close();?>
+ </div>

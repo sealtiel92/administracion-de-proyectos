@@ -33,7 +33,7 @@ class Cliente extends CI_Controller {
 	function index()
 	{
 		$data['title'] = "Inicio";
-		$data['producto'] = $this->cliente_model->productos();
+		$data['producto'] = $this->cliente_model->categoria();
 		if(!$this->ion_auth->logged_in())
 		{
 			$this->load->view('cliente/header_login', $data);
@@ -53,7 +53,7 @@ class Cliente extends CI_Controller {
 
 		$data['title'] = "Login";
 
-		$data['producto'] = $this->cliente_model->productos();
+		$data['producto'] = $this->cliente_model->categoria();
 		if(!$this->ion_auth->logged_in())
 		{
 			
@@ -217,7 +217,7 @@ class Cliente extends CI_Controller {
 				'value' => $this->form_validation->set_value('password_confirm'),
 			);
 			$data['title']='Registro';
-			$data['producto'] = $this->cliente_model->productos();
+			$data['producto'] = $this->cliente_model->categoria();
 			$this->load->view('cliente/header_login', $data);
 			$this->_render_page('cliente/registro', $this->data);
 		}
@@ -301,7 +301,7 @@ class Cliente extends CI_Controller {
 	{
 		
 			$data['title']='Registro';
-			$data['producto'] = $this->cliente_model->productos();
+			$data['producto'] = $this->cliente_model->categoria();
 			$this->load->view('cliente/header_login', $data);
 		if(!$this->ion_auth->logged_in())
 		{
@@ -418,7 +418,7 @@ class Cliente extends CI_Controller {
 	function catalogo($id = null)
 	{
 		$data['title']='catalogo';
-		$data['producto'] = $this->cliente_model->productos();
+		$data['producto'] = $this->cliente_model->categoria();
 		//get producto 
 			
 			if($id != null)
@@ -444,8 +444,11 @@ class Cliente extends CI_Controller {
 
 	function compras($id = null)
 	{
+		if(!empty($this->ion_auth->obtenerDatos()))
+			$data['productos'] = $this->cliente_model->productos($this->ion_auth->obtenerDatos());
+
 		$data['title']='compras';
-		$data['producto'] = $this->cliente_model->productos();
+		$data['producto'] = $this->cliente_model->categoria();
 
 		if($this->ion_auth->logged_in())
 		{	
@@ -464,7 +467,7 @@ class Cliente extends CI_Controller {
 	function quienes()
 	{
 		$data['title']='¿quienes somos?';
-		$data['producto'] = $this->cliente_model->productos();
+		$data['producto'] = $this->cliente_model->categoria();
 		if(!$this->ion_auth->logged_in())
 		{
 			$this->load->view('cliente/header_login', $data);
@@ -480,7 +483,7 @@ class Cliente extends CI_Controller {
 	function pedidos()
 	{
 		$data['title']='pedidos';
-		$data['producto'] = $this->cliente_model->productos();
+		$data['producto'] = $this->cliente_model->categoria();
 		$data['pedido'] = $this->cliente_model->pedidos($this->ion_auth->get_user_id());
 		if(!$this->ion_auth->logged_in())
 		{

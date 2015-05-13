@@ -2,7 +2,15 @@
 	margin: 0px auto;
 	padding: 0px;
 }
-
+.tablaProductos{
+	width: 50%;
+}
+.tablaPedidos{
+	width: 70%;
+}
+.tablaRegistro{
+	width: 30%;
+}
 #panel{
 	width: 960px;
 	height: 40px;
@@ -13,7 +21,7 @@
 	width: 192px;
 	height: 40px;
 	float: left;
-	background-color: #609527;
+	background-color: #5bc0de;;
 	display: block;
 	text-align: center;
 	line-height: 40px;

@@ -1,0 +1,23 @@
+INSERT INTO `producto` VALUES 
+(1,'camisa'),
+(2,'playera');
+
+INSERT INTO `detalle` VALUES 
+(1,'polo','M','fruit',100,'negra',20.0),
+(2,'V','M','fruit',100,'blanco',20.0);
+
+INSERT INTO `users` VALUES 
+(1,'127.0.0.1','administrator','$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36',
+'','admin@admin.com','',NULL,NULL,NULL,1268889823,1430362039,1,'Admin','istrator','0'),
+(2,'127.0.0.1','seat hh','$2y$08$tiZvgHOwIZ8pvxreIpI44OJOW..0nPwSk8FYDaMEWf0JceJfPgb4e',
+NULL,'sealtiel888@gmail.com',NULL,NULL,NULL,NULL,1430358959,NULL,1,'seat','hh','2288182818'),
+(3,'127.0.0.1','seat huerta',
+'$2y$08$r2Dxr8reJ9vgZdtc1ZK39e5J8SNQXGcsCBaQlKE9twhiq//tOcxJK',
+NULL,'sealtiel92@hotmail.com',NULL,NULL,NULL,NULL,1430359151,1430362137,1,'seat','huerta','2288182818');
+
+INSERT INTO `groups` VALUES 
+(1,'admin','Administrator'),
+(2,'members','General User'),
+(3,'cliente','cliente');
+
+INSERT INTO `users_groups` VALUES (1,1,1),(2,2,2),(3,3,3);

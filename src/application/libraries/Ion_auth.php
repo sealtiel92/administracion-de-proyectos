@@ -528,4 +528,23 @@ class Ion_auth
 		 */
 		return $check_all;
 	}
+	public function obtenerDatos()
+	{
+		if(!isset($_SESSION)){
+    	session_start();
+		}
+		
+		$arraR = array();
+		$arr = $_SESSION["array"];
+		$max = $_SESSION["max"]; 
+
+		for ($i=0; $i < count($arr); $i++) { 
+			if (!	empty($_POST["check$i"]))
+			{
+				array_push($arraR, $arr[$i]);
+			}
+		}
+		return $arraR;
+	}
+
 }

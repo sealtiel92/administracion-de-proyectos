@@ -2,19 +2,23 @@
 <head>
   <title><?= $title?></title>
   <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="<?=base_url()?>/application/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="<?=base_url()?>/application/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="<?=base_url()?>/application/css/bootstrap-theme.css">
+  <link rel="stylesheet" type="text/css" href="<?=base_url()?>/application/css/bootstrap-theme.min.css">
   <?= '<link rel="stylesheet" type="text/css" href="'.base_url().'application/css/style.css">' ?>
 </head>
 <body>
   <div id="panel">
     <ul class="botones">
       <?= '<li><a href="'.base_url().'cliente/index">Inicio</a></li>'?>
-      <?= '<li><a href="'.base_url().'cliente/catalogo">catalogo</a>'?>
+      <?= '<li><a href="'.base_url().'cliente/catalogo">Catalogo</a>'?>
         
         <ul class="submenu">
           <?php foreach($producto as $row)
           {
             echo "<li>";
-            echo '<a href="'.base_url().'cliente/catalogo/'.$row->idproducto.'">'.$row->nombre.'</a>';
+            echo '<a href="'.base_url().'cliente/catalogo/'.$row->idcategoria.'">'.$row->nombre.'</a>';
             echo "</li>";
           } ?>
         </ul>
