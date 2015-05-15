@@ -446,7 +446,7 @@ class Cliente extends CI_Controller {
 	{
 		if(!empty($this->ion_auth->obtenerDatos()))
 			$data['productos'] = $this->cliente_model->productos($this->ion_auth->obtenerDatos());
-
+		$data['message'] = null;
 		$data['title']='compras';
 		$data['producto'] = $this->cliente_model->categoria();
 
@@ -494,6 +494,34 @@ class Cliente extends CI_Controller {
 			$this->load->view('cliente/header_logout', $data);
 		}	
 		$this->load->view('cliente/pedido', $data);	
+	}
+
+	function nuevoPedido()
+	{
+		$fechaini = date_create(date('d-m-Y'));
+		$fechafin = date_add(date_create(date('d-m-Y')), date_interval_create_from_date_string('10 days'));
+		session_start();
+		$max = $_SESSION["max"];
+		$ids = $_SESSION["ids"];
+
+		if ($_POST) {
+
+			for ($i=0; $i < $max; $i++) { 
+				$contenido = array(
+				'users_id' => $this->ion_auth->get_user_id(),
+				'fechaI' => date_format($fechaini,'Y-m-d'),
+				'fechaE' => date_format($fechafin,'Y-m-d'),
+				'cant' => $_POST["txtcant$i"],
+				'desc' => $_POST["txtdesc$i"]);
+				$this->cliente_model->insertArticulos($contenido);
+				$this->cliente_model->insertUtiliza($ids[$i],$max);
+			}
+
+			redirect(base_url().'cliente/pedidos');
+		}else
+		{
+			redirect(base_url().'cliente/compras');
+		}
 	}
 
 }
