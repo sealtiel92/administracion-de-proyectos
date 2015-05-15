@@ -92,21 +92,5 @@ class Cliente_model extends CI_Model
 			return null;
 		}
 	}
-	public function insertArticulos($contenido)
-	{
-		$this->db->insert('pedido',$contenido);
-	}
-
-	public function insertTiene()
-	{	
-
-	}
-
-	public function insertUtiliza($ids,$max)
-	{
-		$this->db->insert('utiliza',array(
-			'idproducto' => $ids,
-			'idpedido' => $this->db->insert_id()));
-	}
 
 }

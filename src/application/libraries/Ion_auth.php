@@ -528,8 +528,6 @@ class Ion_auth
 		 */
 		return $check_all;
 	}
-
-
 	public function obtenerDatos()
 	{
 		if(!isset($_SESSION)){
@@ -541,7 +539,7 @@ class Ion_auth
 		$max = $_SESSION["max"]; 
 
 		for ($i=0; $i < count($arr); $i++) { 
-			if (!empty($_POST["check$i"]))
+			if (!	empty($_POST["check$i"]))
 			{
 				array_push($arraR, $arr[$i]);
 			}
