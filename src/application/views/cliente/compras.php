@@ -33,8 +33,8 @@ echo "<th class='info'>Descripcion</th>";
 $i=0;
 $ids = array();
 	foreach ($productos as $row) {
-		$desc = "txtcant".$i;
-		$cant = "txtdesc".$i;
+		$cant = "txtcant".$i;
+		$desc = "txtdesc".$i;
 		echo "<tr>";
 		echo '<td>'.$row->nombre.'</td>';
 		echo '<td>'.$row->tipo.'</td>';
