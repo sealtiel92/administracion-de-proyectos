@@ -53,7 +53,7 @@ class Cliente_model extends CI_Model
 		$query = $this->db->get();
 		if ($query->num_rows() > 0)
 		{
-			return $this->db->count_all_results();
+			return  $query->num_rows();
 		}
 		else
 		{
@@ -91,6 +91,25 @@ class Cliente_model extends CI_Model
 		{
 			return null;
 		}
+	}
+	public function insertArticulos($contenido)
+	{
+		$this->db->insert('pedido',$contenido);
+	}
+
+	public function insertUtiliza($ids,$ultimoid)
+	{
+		$this->db->insert('utiliza',array(
+			'idproducto' => $ids,
+			'idpedido' => $ultimoid));
+	}
+
+	public function insertTiene($ultimoid)
+	{	
+		$this->db->insert('tiene',array(
+			'idpedido' => $ultimoid,
+			'edo' => 0));
+
 	}
 
 }

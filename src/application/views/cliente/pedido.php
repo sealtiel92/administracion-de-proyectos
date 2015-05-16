@@ -12,7 +12,6 @@
 		echo "<th class='info'>Fecha de solicitud</th>";
 		echo "<th class='info'>Fecha de entrega</th>";
 		echo "<th class='info'>Descripcion</th>";
-		
 		foreach($pedido as $row)
 		{
 		echo "<tr>";

@@ -3,7 +3,7 @@
 <center>
 <h1>Pedidos</h1>
 <div class="tablaPedidos">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="style.css">
 </div>
 <body>
 

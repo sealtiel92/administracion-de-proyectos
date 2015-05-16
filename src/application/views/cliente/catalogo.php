@@ -13,7 +13,9 @@
 <?php echo form_open("cliente/compras");?>
 
 <?php
-session_start();
+if (!empty($productos))
+{
+	session_start();
 $i=0;
 $arr=[];
 	foreach($productos as $row)
@@ -32,6 +34,8 @@ $arr=[];
 	}
 	$_SESSION["array"] = $arr;
 	$_SESSION["max"] = $i;  
+}
+
 
 ?>
 
