@@ -529,7 +529,11 @@ class Ion_auth
 		return $check_all;
 	}
 
+	/*
+	no recibe parametros
+	regresa un arreglo con los datos de los elemntos seleccionados
 
+	*/
 	public function obtenerDatos()
 	{
 		if(!isset($_SESSION)){
@@ -537,8 +541,8 @@ class Ion_auth
 		}
 		
 		$arraR = array();
-		$arr = $_SESSION["array"];
-		$max = $_SESSION["max"]; 
+		$arr = $this->obtenerArray();
+		$max = $this->obtenerMax(); 
 
 		for ($i=0; $i < count($arr); $i++) { 
 			if (!empty($_POST["check$i"]))
@@ -547,6 +551,37 @@ class Ion_auth
 			}
 		}
 		return $arraR;
+	}
+
+
+	//regresa la fecha inicial(actual) de solicitud de producto
+	public function fechaI()
+	{
+		return date_create(date('d-m-Y'));
+	}
+
+	//regresa la fecha final de entrega de producto
+	public function fechaF()
+	{
+		return date_add(date_create(date('d-m-Y')), date_interval_create_from_date_string('10 days'));
+	}
+
+	//obtiene logintud de array de datos seleccionados
+	public function obtenerMax()
+	{
+		if(!isset($_SESSION)){
+    	session_start();
+		}
+		return $_SESSION["max"];
+	}
+	
+	//obtiene array de los datos seleccionados
+	public function obtenerArray()
+	{
+		if(!isset($_SESSION)){
+    	session_start();
+		}
+		return $_SESSION["array"];
 	}
 
 }

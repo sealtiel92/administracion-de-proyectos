@@ -142,11 +142,11 @@ class Cliente extends CI_Controller {
 		$tables = $this->config->item('tables','ion_auth');
 
 		//validate form input
-		$this->form_validation->set_rules('first_name', $this->lang->line('create_user_validation_fname_label'), 'required');
-		$this->form_validation->set_rules('last_name', $this->lang->line('create_user_validation_lname_label'), 'required');
+		$this->form_validation->set_rules('first_name', $this->lang->line('create_user_validation_fname_label'), 'required|alpha');
+		$this->form_validation->set_rules('last_name', $this->lang->line('create_user_validation_lname_label'), 'required|alpha');
 		$this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 
 			'required|valid_email|is_unique['.$tables['users'].'.email]');
-		$this->form_validation->set_rules('phone', $this->lang->line('create_user_validation_phone_label'), 'required');
+		$this->form_validation->set_rules('phone', $this->lang->line('create_user_validation_phone_label'), 'required|is_numeric');
 		$this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 
 			'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . 
 			$this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
@@ -452,8 +452,8 @@ class Cliente extends CI_Controller {
 
 		if($this->ion_auth->logged_in())
 		{	
-			$data['iduser']=$this->ion_auth->get_user_id();
-			$data['idpro']=$id;		
+			$data['iduser'] = $this->ion_auth->get_user_id();
+			$data['idpro'] = $id;		
 			$data['count'] = $this->cliente_model->pedidos_count($this->ion_auth->get_user_id());
 			$this->load->view('cliente/header_logout', $data);
 			$this->load->view('cliente/compras', $data);
@@ -496,15 +496,19 @@ class Cliente extends CI_Controller {
 		$this->load->view('cliente/pedido', $data);	
 	}
 
+	//funcion pedido obtiene todos lo datos necesarios para insercion a la base de datos
+	//como fechas, cantodad, cliente y Descripcion
 	function nuevoPedido()
 	{
-			$fechaini = date_create(date('d-m-Y'));
-			$fechafin = date_add(date_create(date('d-m-Y')), date_interval_create_from_date_string('10 days'));
-			session_start();
-			$max = $_SESSION["max"];
-			$ids = $_SESSION["ids"];
-
 			if ($_POST) {
+
+				//obtener fechas inicial y final
+				$fechaini = $this->ion_auth->fechaI();
+				$fechafin = $this->ion_auth->fechaF();
+
+				//obtener arreglo y logitud
+				$max = $this->ion_auth->obtenerMax();
+				$ids = $this->ion_auth->obtenerArray();
 
 				for ($i=0; $i < $max; $i++) { 
 					$contenido = array(

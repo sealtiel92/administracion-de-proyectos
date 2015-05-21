@@ -11,6 +11,5 @@
 				alert("campos vacios");
 				return false;
 			}
-		};
-
+		}
 	}

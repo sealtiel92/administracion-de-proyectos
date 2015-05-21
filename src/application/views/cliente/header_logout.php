@@ -6,6 +6,7 @@
   <link rel="stylesheet" type="text/css" href="<?=base_url()?>/application/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="<?=base_url()?>/application/css/bootstrap-theme.css">
   <link rel="stylesheet" type="text/css" href="<?=base_url()?>/application/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" type="text/css" href="<?=base_url()?>/application/css/carrusel.css">
   <?= '<link rel="stylesheet" type="text/css" href="'.base_url().'application/css/style.css">' ?>
 </head>
 <body>
